@@ -21,7 +21,6 @@ const Home = () => {
       <Col>
         <div className="d-flex flex-row justify-content-between my-4">
           <h3>Redux Cart App</h3>
-
           <Button onClick={handleCartClick} color="primary">
             Cart{" "}
             <Badge color="white" className="text-black">

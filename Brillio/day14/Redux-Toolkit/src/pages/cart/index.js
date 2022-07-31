@@ -1,35 +1,39 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Card, CardBody, CardFooter, CardText, Container } from "reactstrap";
-import { addToCart, decrementFromCart, selectCartItems ,selectCartTotal} from "../../store/cart/cartSlice";
+import { addToCart, decrementFromCart, deleteFromCart, selectCartItems ,selectCartTotal} from "../../store/cart/cartSlice";
 import "./cart.css";
 const Cart = () => {
   const cartItems = useSelector(selectCartItems);
  const cartTotal = useSelector(selectCartTotal);
   const dispatch = useDispatch();
 
-  function handleDeleteFromCart(product) {
+  function handleDecrementFromCart(product) {
     dispatch(decrementFromCart(product));
   }
 
   function handleAddToCart(product) {
     dispatch(addToCart(product));
   }
+  function handleDeleteFromCart(product) {
+    dispatch(deleteFromCart(product));
+  }
   return (
-    <Container className="flex-row cart-container">
-      <Container className="flex-col card-container">
+    <Container className=" cart-container flex-row">
+      <Container className="card-container flex-col ">
         {cartItems &&
-          cartItems.map((item) => (
-            <Card className="mt-2">
+          cartItems.map((item,idx) => (
+            <Card key = {idx} className="mt-2">
               <CardBody className="flex-row">
-                <div>
+                <div className="item-details">
                   <p>ITEM ID: {item.id}</p>
                   <p>{item.name}</p>
                   <p>QUANTITY: {item.quantity}</p>
                   <p> Price : {item.price}</p>
+                  <Button className="btn btn-danger" onClick ={()=>handleDeleteFromCart(item)}>REMOVE</Button>
                 </div>
-                <div className="flex-col">
-                  <Button onClick={() => handleDeleteFromCart(item)}>-</Button>
+                <div className="flex-row center">
+                  <Button onClick={() => handleDecrementFromCart(item)}>-</Button>
                   <Button onClick={() => handleAddToCart(item)}>+</Button>
                 </div>
               </CardBody>
@@ -37,8 +41,9 @@ const Cart = () => {
             </Card>
           ))}
       </Container>
-      {cartTotal ? 
-      <Container className = "cart-total-container">
+      {
+      cartTotal!==0 ? 
+      (<Container className = "cart-total-container">
            <Card className="mt-2">
               <CardBody>
                 <CardText>
@@ -49,8 +54,8 @@ const Cart = () => {
                 </Button>
               </CardBody>
             </Card>
-      </Container>:''
-}
+      </Container>):''
+  }
     </Container>
   );
 };

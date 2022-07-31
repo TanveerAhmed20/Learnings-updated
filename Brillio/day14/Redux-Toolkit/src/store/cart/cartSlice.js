@@ -28,21 +28,30 @@ const cartSlice = createSlice({
     },
     decrementFromCart:(state,action)=>{
       const itemIndex = state.cartItems.findIndex((item) => item.id === action.payload.id);
-      const quantity = state.cartItems[itemIndex].quantity;
-      if(quantity===undefined){
+      const {quantity, price} = action.payload;
+      const q = quantity? quantity:1;
+
+      if(quantity===1){
+        state.total -= price;
+        --state.cartCount;
           state.cartItems = [...state.cartItems.slice(0,itemIndex),...state.cartItems.slice(itemIndex+1)];
           return;
         }
-      --state.cartItems[itemIndex].quantity;
+
+      --state.quantity;
       --state.cartCount;
+      state.total -= state.cartItems[itemIndex].price;
       if(state.cartItems[itemIndex].quantity ===0) 
         state.cartItems = [...state.cartItems.slice(0,itemIndex),...state.cartItems.slice(itemIndex+1)];
     }
     ,
     deleteFromCart: (state,action)=>{
+      const {price,quantity} = action.payload;
+      const q = quantity ? quantity: 1;
       const itemIndex = state.cartItems.findIndex((item) => item.id === action.payload.id);
-      state.cartCount-= state.cartItems[itemIndex].quantity;
-      state.total-= state.cartItems[itemIndex].quantity*state.cartItems[itemIndex].price;
+      state.cartCount-= q
+      const sub = q? q*price : price;
+      state.total-=sub;
       state.cartItems = [...state.cartItems.slice(0,itemIndex),...state.cartItems.slice(itemIndex+1)];
     }
   }

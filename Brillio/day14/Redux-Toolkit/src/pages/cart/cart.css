@@ -1,14 +1,18 @@
 .cart-container{
 padding: 10px;
-width:100%;
+display:flex;
+flex-wrap:wrap;
+overflow: hidden;
+
 }
 
 .card-container{
- max-width:60%
+ width:600px;
 }
 
 .cart-total-container{
-    max-width:40%;
+  width:300px; 
+   
 }
 .flex-col {
     display:flex;
@@ -19,8 +23,15 @@ width:100%;
     flex-direction: row;
     justify-content: space-around;
 }
+.center {
+    align-items:center;
+
+}
 
 Button{
- width:300px;
  margin:5px;
+ height:50px;
+}
+.item-details p{
+  padding: 0px 0px;
 }
